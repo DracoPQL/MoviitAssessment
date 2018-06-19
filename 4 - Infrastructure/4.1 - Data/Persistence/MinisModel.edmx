@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MINISModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="INGREDIENT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IngredientName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="MachineStackIndex" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrderStateId" Type="int" Nullable="false" />
+          <Property Name="TableNumber" Type="smallint" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDER_SANDWICH">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SandwichId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="smallint" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDER_STATE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrderStateName" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SANDWICH">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SandwichName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="SandwichTypeId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SANDWICH_CUT_TYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SandwichCutName" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SANDWICH_INGREDIENT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SandwichId" Type="int" Nullable="false" />
+          <Property Name="IngredientId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SANDWICH_TYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SandwichTypeName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="CutTypeId" Type="int" Nullable="false" />
+          <Property Name="HasSalsa" Type="bit" Nullable="false" />
+          <Property Name="SalsaInside" Type="bit" Nullable="false" />
+          <Property Name="HasCompression" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ORDER_SANDWICH_To_ORDER">
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="1" />
+          <End Role="ORDER_SANDWICH" Type="Self.ORDER_SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER_SANDWICH">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_SANDWICH_To_SANDWICH">
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="1" />
+          <End Role="ORDER_SANDWICH" Type="Self.ORDER_SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER_SANDWICH">
+              <PropertyRef Name="SandwichId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_To_ORDER_STATE">
+          <End Role="ORDER_STATE" Type="Self.ORDER_STATE" Multiplicity="1" />
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER_STATE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER">
+              <PropertyRef Name="OrderStateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_INGREDIENT_To_INGREDIENT">
+          <End Role="INGREDIENT" Type="Self.INGREDIENT" Multiplicity="1" />
+          <End Role="SANDWICH_INGREDIENT" Type="Self.SANDWICH_INGREDIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INGREDIENT">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_INGREDIENT">
+              <PropertyRef Name="IngredientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_INGREDIENT_To_SANDWICH">
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="1" />
+          <End Role="SANDWICH_INGREDIENT" Type="Self.SANDWICH_INGREDIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_INGREDIENT">
+              <PropertyRef Name="SandwichId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_To_SANDWICH_TYPE">
+          <End Role="SANDWICH_TYPE" Type="Self.SANDWICH_TYPE" Multiplicity="1" />
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH_TYPE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH">
+              <PropertyRef Name="SandwichTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE">
+          <End Role="SANDWICH_CUT_TYPE" Type="Self.SANDWICH_CUT_TYPE" Multiplicity="1" />
+          <End Role="SANDWICH_TYPE" Type="Self.SANDWICH_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH_CUT_TYPE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_TYPE">
+              <PropertyRef Name="CutTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MINISModelStoreContainer">
+          <EntitySet Name="INGREDIENT" EntityType="Self.INGREDIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER" EntityType="Self.ORDER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER_SANDWICH" EntityType="Self.ORDER_SANDWICH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER_STATE" EntityType="Self.ORDER_STATE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SANDWICH" EntityType="Self.SANDWICH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SANDWICH_CUT_TYPE" EntityType="Self.SANDWICH_CUT_TYPE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SANDWICH_INGREDIENT" EntityType="Self.SANDWICH_INGREDIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SANDWICH_TYPE" EntityType="Self.SANDWICH_TYPE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ORDER_SANDWICH_To_ORDER" Association="Self.FK_ORDER_SANDWICH_To_ORDER">
+            <End Role="ORDER" EntitySet="ORDER" />
+            <End Role="ORDER_SANDWICH" EntitySet="ORDER_SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_SANDWICH_To_SANDWICH" Association="Self.FK_ORDER_SANDWICH_To_SANDWICH">
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+            <End Role="ORDER_SANDWICH" EntitySet="ORDER_SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_To_ORDER_STATE" Association="Self.FK_ORDER_To_ORDER_STATE">
+            <End Role="ORDER_STATE" EntitySet="ORDER_STATE" />
+            <End Role="ORDER" EntitySet="ORDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_INGREDIENT_To_INGREDIENT" Association="Self.FK_SANDWICH_INGREDIENT_To_INGREDIENT">
+            <End Role="INGREDIENT" EntitySet="INGREDIENT" />
+            <End Role="SANDWICH_INGREDIENT" EntitySet="SANDWICH_INGREDIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_INGREDIENT_To_SANDWICH" Association="Self.FK_SANDWICH_INGREDIENT_To_SANDWICH">
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+            <End Role="SANDWICH_INGREDIENT" EntitySet="SANDWICH_INGREDIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_To_SANDWICH_TYPE" Association="Self.FK_SANDWICH_To_SANDWICH_TYPE">
+            <End Role="SANDWICH_TYPE" EntitySet="SANDWICH_TYPE" />
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE" Association="Self.FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE">
+            <End Role="SANDWICH_CUT_TYPE" EntitySet="SANDWICH_CUT_TYPE" />
+            <End Role="SANDWICH_TYPE" EntitySet="SANDWICH_TYPE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MINISModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="INGREDIENT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IngredientName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MachineStackIndex" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="SANDWICH_INGREDIENT" Relationship="Self.FK_SANDWICH_INGREDIENT_To_INGREDIENT" FromRole="INGREDIENT" ToRole="SANDWICH_INGREDIENT" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="OrderStateId" Type="Int32" Nullable="false" />
+          <Property Name="TableNumber" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="ORDER_SANDWICH" Relationship="Self.FK_ORDER_SANDWICH_To_ORDER" FromRole="ORDER" ToRole="ORDER_SANDWICH" />
+          <NavigationProperty Name="ORDER_STATE" Relationship="Self.FK_ORDER_To_ORDER_STATE" FromRole="ORDER" ToRole="ORDER_STATE" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="ORDER_SANDWICH">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SandwichId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int16" Nullable="false" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ORDER" Relationship="Self.FK_ORDER_SANDWICH_To_ORDER" FromRole="ORDER_SANDWICH" ToRole="ORDER" />
+          <NavigationProperty Name="SANDWICH" Relationship="Self.FK_ORDER_SANDWICH_To_SANDWICH" FromRole="ORDER_SANDWICH" ToRole="SANDWICH" />
+        </EntityType>
+        <EntityType Name="ORDER_STATE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="OrderStateName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ORDER" Relationship="Self.FK_ORDER_To_ORDER_STATE" FromRole="ORDER_STATE" ToRole="ORDER" />
+        </EntityType>
+        <EntityType Name="SANDWICH">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SandwichName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SandwichTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="ORDER_SANDWICH" Relationship="Self.FK_ORDER_SANDWICH_To_SANDWICH" FromRole="SANDWICH" ToRole="ORDER_SANDWICH" />
+          <NavigationProperty Name="SANDWICH_INGREDIENT" Relationship="Self.FK_SANDWICH_INGREDIENT_To_SANDWICH" FromRole="SANDWICH" ToRole="SANDWICH_INGREDIENT" />
+          <NavigationProperty Name="SANDWICH_TYPE" Relationship="Self.FK_SANDWICH_To_SANDWICH_TYPE" FromRole="SANDWICH" ToRole="SANDWICH_TYPE" />
+        </EntityType>
+        <EntityType Name="SANDWICH_CUT_TYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SandwichCutName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SANDWICH_TYPE" Relationship="Self.FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE" FromRole="SANDWICH_CUT_TYPE" ToRole="SANDWICH_TYPE" />
+        </EntityType>
+        <EntityType Name="SANDWICH_INGREDIENT">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SandwichId" Type="Int32" Nullable="false" />
+          <Property Name="IngredientId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="INGREDIENT" Relationship="Self.FK_SANDWICH_INGREDIENT_To_INGREDIENT" FromRole="SANDWICH_INGREDIENT" ToRole="INGREDIENT" />
+          <NavigationProperty Name="SANDWICH" Relationship="Self.FK_SANDWICH_INGREDIENT_To_SANDWICH" FromRole="SANDWICH_INGREDIENT" ToRole="SANDWICH" />
+        </EntityType>
+        <EntityType Name="SANDWICH_TYPE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SandwichTypeName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CutTypeId" Type="Int32" Nullable="false" />
+          <Property Name="HasSalsa" Type="Boolean" Nullable="false" />
+          <Property Name="SalsaInside" Type="Boolean" Nullable="false" />
+          <Property Name="HasCompression" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SANDWICH" Relationship="Self.FK_SANDWICH_To_SANDWICH_TYPE" FromRole="SANDWICH_TYPE" ToRole="SANDWICH" />
+          <NavigationProperty Name="SANDWICH_CUT_TYPE" Relationship="Self.FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE" FromRole="SANDWICH_TYPE" ToRole="SANDWICH_CUT_TYPE" />
+        </EntityType>
+        <Association Name="FK_SANDWICH_INGREDIENT_To_INGREDIENT">
+          <End Role="INGREDIENT" Type="Self.INGREDIENT" Multiplicity="1" />
+          <End Role="SANDWICH_INGREDIENT" Type="Self.SANDWICH_INGREDIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INGREDIENT">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_INGREDIENT">
+              <PropertyRef Name="IngredientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_SANDWICH_To_ORDER">
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="1" />
+          <End Role="ORDER_SANDWICH" Type="Self.ORDER_SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER_SANDWICH">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_To_ORDER_STATE">
+          <End Role="ORDER_STATE" Type="Self.ORDER_STATE" Multiplicity="1" />
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER_STATE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER">
+              <PropertyRef Name="OrderStateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_SANDWICH_To_SANDWICH">
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="1" />
+          <End Role="ORDER_SANDWICH" Type="Self.ORDER_SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ORDER_SANDWICH">
+              <PropertyRef Name="SandwichId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_INGREDIENT_To_SANDWICH">
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="1" />
+          <End Role="SANDWICH_INGREDIENT" Type="Self.SANDWICH_INGREDIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_INGREDIENT">
+              <PropertyRef Name="SandwichId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_To_SANDWICH_TYPE">
+          <End Role="SANDWICH_TYPE" Type="Self.SANDWICH_TYPE" Multiplicity="1" />
+          <End Role="SANDWICH" Type="Self.SANDWICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH_TYPE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH">
+              <PropertyRef Name="SandwichTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE">
+          <End Role="SANDWICH_CUT_TYPE" Type="Self.SANDWICH_CUT_TYPE" Multiplicity="1" />
+          <End Role="SANDWICH_TYPE" Type="Self.SANDWICH_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SANDWICH_CUT_TYPE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SANDWICH_TYPE">
+              <PropertyRef Name="CutTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MINISEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="INGREDIENT" EntityType="Self.INGREDIENT" />
+          <EntitySet Name="ORDER" EntityType="Self.ORDER" />
+          <EntitySet Name="ORDER_SANDWICH" EntityType="Self.ORDER_SANDWICH" />
+          <EntitySet Name="ORDER_STATE" EntityType="Self.ORDER_STATE" />
+          <EntitySet Name="SANDWICH" EntityType="Self.SANDWICH" />
+          <EntitySet Name="SANDWICH_CUT_TYPE" EntityType="Self.SANDWICH_CUT_TYPE" />
+          <EntitySet Name="SANDWICH_INGREDIENT" EntityType="Self.SANDWICH_INGREDIENT" />
+          <EntitySet Name="SANDWICH_TYPE" EntityType="Self.SANDWICH_TYPE" />
+          <AssociationSet Name="FK_SANDWICH_INGREDIENT_To_INGREDIENT" Association="Self.FK_SANDWICH_INGREDIENT_To_INGREDIENT">
+            <End Role="INGREDIENT" EntitySet="INGREDIENT" />
+            <End Role="SANDWICH_INGREDIENT" EntitySet="SANDWICH_INGREDIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_SANDWICH_To_ORDER" Association="Self.FK_ORDER_SANDWICH_To_ORDER">
+            <End Role="ORDER" EntitySet="ORDER" />
+            <End Role="ORDER_SANDWICH" EntitySet="ORDER_SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_To_ORDER_STATE" Association="Self.FK_ORDER_To_ORDER_STATE">
+            <End Role="ORDER_STATE" EntitySet="ORDER_STATE" />
+            <End Role="ORDER" EntitySet="ORDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_SANDWICH_To_SANDWICH" Association="Self.FK_ORDER_SANDWICH_To_SANDWICH">
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+            <End Role="ORDER_SANDWICH" EntitySet="ORDER_SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_INGREDIENT_To_SANDWICH" Association="Self.FK_SANDWICH_INGREDIENT_To_SANDWICH">
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+            <End Role="SANDWICH_INGREDIENT" EntitySet="SANDWICH_INGREDIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_To_SANDWICH_TYPE" Association="Self.FK_SANDWICH_To_SANDWICH_TYPE">
+            <End Role="SANDWICH_TYPE" EntitySet="SANDWICH_TYPE" />
+            <End Role="SANDWICH" EntitySet="SANDWICH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE" Association="Self.FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE">
+            <End Role="SANDWICH_CUT_TYPE" EntitySet="SANDWICH_CUT_TYPE" />
+            <End Role="SANDWICH_TYPE" EntitySet="SANDWICH_TYPE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MINISModelStoreContainer" CdmEntityContainer="MINISEntities">
+          <EntitySetMapping Name="INGREDIENT">
+            <EntityTypeMapping TypeName="MINISModel.INGREDIENT">
+              <MappingFragment StoreEntitySet="INGREDIENT">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IngredientName" ColumnName="IngredientName" />
+                <ScalarProperty Name="MachineStackIndex" ColumnName="MachineStackIndex" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDER">
+            <EntityTypeMapping TypeName="MINISModel.ORDER">
+              <MappingFragment StoreEntitySet="ORDER">
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrderStateId" ColumnName="OrderStateId" />
+                <ScalarProperty Name="TableNumber" ColumnName="TableNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDER_SANDWICH">
+            <EntityTypeMapping TypeName="MINISModel.ORDER_SANDWICH">
+              <MappingFragment StoreEntitySet="ORDER_SANDWICH">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SandwichId" ColumnName="SandwichId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDER_STATE">
+            <EntityTypeMapping TypeName="MINISModel.ORDER_STATE">
+              <MappingFragment StoreEntitySet="ORDER_STATE">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrderStateName" ColumnName="OrderStateName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SANDWICH">
+            <EntityTypeMapping TypeName="MINISModel.SANDWICH">
+              <MappingFragment StoreEntitySet="SANDWICH">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SandwichName" ColumnName="SandwichName" />
+                <ScalarProperty Name="SandwichTypeId" ColumnName="SandwichTypeId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SANDWICH_CUT_TYPE">
+            <EntityTypeMapping TypeName="MINISModel.SANDWICH_CUT_TYPE">
+              <MappingFragment StoreEntitySet="SANDWICH_CUT_TYPE">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SandwichCutName" ColumnName="SandwichCutName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SANDWICH_INGREDIENT">
+            <EntityTypeMapping TypeName="MINISModel.SANDWICH_INGREDIENT">
+              <MappingFragment StoreEntitySet="SANDWICH_INGREDIENT">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SandwichId" ColumnName="SandwichId" />
+                <ScalarProperty Name="IngredientId" ColumnName="IngredientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SANDWICH_TYPE">
+            <EntityTypeMapping TypeName="MINISModel.SANDWICH_TYPE">
+              <MappingFragment StoreEntitySet="SANDWICH_TYPE">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SandwichTypeName" ColumnName="SandwichTypeName" />
+                <ScalarProperty Name="CutTypeId" ColumnName="CutTypeId" />
+                <ScalarProperty Name="HasSalsa" ColumnName="HasSalsa" />
+                <ScalarProperty Name="SalsaInside" ColumnName="SalsaInside" />
+                <ScalarProperty Name="HasCompression" ColumnName="HasCompression" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

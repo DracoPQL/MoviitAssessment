@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Moviit.Services.MinisServices.SandwichsService" CodeBehind="SandwichsService.svc.cs" Factory="Moviit.Services.MinisServices.Unity.UnityServiceHostFactory" %>

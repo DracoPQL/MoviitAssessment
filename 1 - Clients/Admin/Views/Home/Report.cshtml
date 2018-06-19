@@ -1,0 +1,32 @@
+﻿<div class="container" ng-controller="report-controller">
+    <div class="panel panel-info">
+
+        <div class="panel-heading">
+            Max sandwichs sold in last 7 days
+        </div>
+
+        <table class="table table-bordered">
+            <thead class="panel-title">
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rep in Report">
+                    <td>{{rep.SandwichName}}</td>
+                    <td>{{rep.OrderDate | date:'medium'}}</td>
+                    <td>{{rep.Quantity}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/AngularJSApp/Sandwich/Module.js"></script>
+    <script src="~/AngularJSApp/Reports/Service.js"></script>
+    <script src="~/AngularJSApp/Reports/Controller.js"></script>
+}

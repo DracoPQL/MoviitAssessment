@@ -1,0 +1,127 @@
+﻿<div class="container" ng-controller="sandwich-controller">
+    <div class="panel panel-info">
+
+        <div class="panel-heading">
+            Sandwichs
+        </div>
+
+        <div class="panel-body">
+            <button type="button" class="btn btn-info" data-target="#AddNew" data-toggle="modal">Add Sandwich</button>
+            <br />
+        </div>
+
+        <table class="table table-bordered">
+            <thead class="panel-title">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="sd in Sandwiches">
+                    <td>{{sd.Id}}</td>
+                    <td>{{sd.Name}}</td>
+                    <td>{{sd.Price}}</td>
+                    <td style="width:200px;">
+                        <a href="#" class="btn btn-info" data-toggle="modal" data-target="#Update" ng-click="getForUpdate(sd)">Update</a>
+                        <a href="#" class="btn btn-danger" id="btnDelete" data-toggle="modal" data-target="#deleteDialog" ng-click="getForDelete(sd)">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @*Modal add new sandwich*@
+    <div class="modal" id="AddNew" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3 class="text-info">Add Sandwich</h3>
+                </div>
+                <div class="modal-body" style="margin-left:20px">
+                    <form class="form-horizontal" name="AddNewForm">
+                        <div class="form-group">
+                            <label class="control-label">Name</label>
+                            <input class="form-control" name="Name" ng-model="Name" type="text" placeholder="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Price</label>
+                            <input class="form-control" name="Price" ng-model="Price" type="text" placeholder="Price" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Type Id</label>
+                            <input class="form-control" name="TypeId" ng-model="TypeId" type="text" placeholder="Type Id" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnSave" data-dismiss="modal" ng-click="save()">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="resetSave()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal udpate sandwich*@
+    <div class="modal" id="Update" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3 class="text-info">Update Sandwich</h3>
+                </div>
+                <div class="modal-body" style="margin-left:20px">
+                    <form class="form-horizontal" name="UpdateSandwichForm">
+                        <div class="form-group">
+                            <input class="form-control" readonly="readonly" name="UpdateId" ng-model="UpdateId" type="hidden" placeholder="Id" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Name</label>
+                            <input class="form-control" name="UpdateName" ng-model="UpdateName" type="text" placeholder="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Price</label>
+                            <input class="form-control" name="UpdatePrice" ng-model="UpdatePrice" type="email" placeholder="Price" />
+                        </div>
+                        <div class="form-group">
+                            <label class="text-info">Type Id</label>
+                            <input class="form-control" name="UpdateTypeId" ng-model="UpdateTypeId" type="text" placeholder="Type Id" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" ng-click="update()">Update</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Modal delete sandwich*@
+    <div class="modal" role="dialog" id="deleteDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3 class="text-info">Are you sure you want to delete this sandwich?</h3>
+                </div>
+                <div class="modal-body">
+                    <div>Sandwich ID : {{UpdateId}} Sandwich Name : {{UpdateName}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete(UpdateId)">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/AngularJSApp/Sandwich/Module.js"></script>
+    <script src="~/AngularJSApp/Sandwich/Service.js"></script>
+    <script src="~/AngularJSApp/Sandwich/Controller.js"></script>
+}

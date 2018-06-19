@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9eefdfc585c5400a9483edc75ff4f67e" Name="Diagram1">
+        <EntityTypeShape EntityType="MINISModel.INGREDIENT" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.ORDER" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.ORDER_SANDWICH" Width="1.5" PointX="7.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.ORDER_STATE" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.SANDWICH" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.SANDWICH_CUT_TYPE" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.SANDWICH_INGREDIENT" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MINISModel.SANDWICH_TYPE" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="MINISModel.FK_SANDWICH_INGREDIENT_To_INGREDIENT" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_ORDER_SANDWICH_To_ORDER" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_ORDER_To_ORDER_STATE" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_ORDER_SANDWICH_To_SANDWICH" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_SANDWICH_INGREDIENT_To_SANDWICH" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_SANDWICH_To_SANDWICH_TYPE" ManuallyRouted="false" />
+        <AssociationConnector Association="MINISModel.FK_SANDWICH_TYPE_To_SANDWICH_CUT_TYPE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
